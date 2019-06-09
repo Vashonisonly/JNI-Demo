@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.example.hellojni"
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild{
+            cmake{
+                cppFlags ""  //设置C++标准为默认，也可以配置为C++11标准
+            }
+        }
+        ndk{                   //这个代码块可以不要，主要用来设置编译的so文件目标平台，如果不配置，默认生成所用平台的so文件
+            moduleName "hello" //ndk模块名字
+            abiFilters "x86"
+        }
+    }
+    externalNativeBuild{
+        cmake{
+            path "CMakeLists.txt"//指定CMake文件路径
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
